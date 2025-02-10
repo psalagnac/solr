@@ -35,7 +35,6 @@ import java.util.stream.Collectors;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.LBSolrClient;
-import org.apache.solr.client.solrj.impl.XMLRequestWriter;
 import org.apache.solr.client.solrj.response.UpdateResponse;
 import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.SolrInputDocument;
@@ -45,7 +44,6 @@ import org.apache.solr.common.cloud.Slice;
 import org.apache.solr.common.params.ModifiableSolrParams;
 import org.apache.solr.common.params.UpdateParams;
 import org.apache.solr.common.util.CollectionUtil;
-import org.apache.solr.common.util.ContentStream;
 
 /**
  * @since solr 1.3
@@ -363,42 +361,6 @@ public class UpdateRequest extends AbstractUpdateRequest {
 
   public void setDeleteQuery(List<String> deleteQuery) {
     this.deleteQuery = deleteQuery;
-  }
-
-  // --------------------------------------------------------------------------
-  // --------------------------------------------------------------------------
-
-  /**
-   * @deprecated TODO
-   */
-  @Deprecated(since = "TODO")
-  @Override
-  public Collection<ContentStream> getContentStreams() throws IOException {
-    return ClientUtils.toContentStreams(getXML(), ClientUtils.TEXT_XML);
-  }
-
-  /**
-   * @deprecated TODO
-   */
-  @Deprecated(since = "TODO")
-  public String getXML() throws IOException {
-    StringWriter writer = new StringWriter();
-    writeXML(writer);
-    writer.flush();
-
-    // If action is COMMIT or OPTIMIZE, it is sent with params
-    String xml = writer.toString();
-    return (xml.length() > 0) ? xml : null;
-  }
-
-  /**
-   * @since solr 1.4 @®deprecated TODO
-   */
-  @Deprecated(since = "TODO")
-  public UpdateRequest writeXML(Writer writer) throws IOException {
-    XMLRequestWriter requestWriter = new XMLRequestWriter();
-    requestWriter.writeXML(this, writer);
-    return this;
   }
 
   // --------------------------------------------------------------------------
